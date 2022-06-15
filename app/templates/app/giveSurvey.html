@@ -1,0 +1,100 @@
+{% extends 'app/base.html' %} {% block content %}
+<div class="container">
+  <div class="row justify-content-center mt-3">
+    <div class="col-md-6 col-sm-12 text-center">
+      <h2>{{survey.name}}</h2>
+    </div>
+  </div>
+  <form method="post" id="surveyForm">
+    {% csrf_token %}
+    {% for question in survey.questions.all %}
+    <div class="row justify-content-center my-3">
+      <div class="card col-md-6 col-sm-12">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ forloop.counter }}. {{ question.question }}
+          </h5>
+          {% if question.type == "1" %}
+          {% for i in '0123456789'|make_list %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ question.pk }}" id="{{ question.pk }}"
+              value="{{forloop.counter}}" />
+            <label class="form-check-label" for="inlineRadio{{forloop.counter}}">{{forloop.counter}}</label>
+          </div>
+          {% endfor %}
+          {% endif %}
+          {% if question.type == "2" %}
+          <div class="form-check mb-1">
+            <input class="form-check-input" type="radio" name="{{ question.pk }}" id="option1"
+              value="{{ question.option1 }}" />
+            <label class="form-check-label" for="option1">{{ question.option1 }}</label>
+          </div>
+
+          <div class="form-check mb-1">
+            <input class="form-check-input" type="radio" name="{{ question.pk }}" id="option2"
+              value="{{ question.option2 }}" />
+            <label class="form-check-label" for="option2">{{ question.option2 }}</label>
+          </div>
+
+          <div class="form-check mb-1">
+            <input class="form-check-input" type="radio" name="{{ question.pk }}" id="option3"
+              value="{{ question.option3 }}" />
+            <label class="form-check-label" for="option3">{{ question.option3 }}</label>
+          </div>
+
+          <div class="form-check mb-1">
+            <input class="form-check-input" type="radio" name="{{ question.pk }}" id="option4"
+              value="{{ question.option4 }}" />
+            <label class="form-check-label" for="option4">{{ question.option4 }}</label>
+          </div>
+
+          {% endif %}
+          {% if question.type == "3" %}
+          {% for rank in ranking %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ question.pk }}" id="rank{{ forloop.counter }}"
+              value="{{ rank }}" />
+            <label class="form-check-label" for="rank{{ forloop.counter }}">{{ rank }}</label>
+          </div>
+          {% endfor %}
+          {% endif %}
+          {% if question.type == "4" %}
+          <div>
+            <label for="valueBased" class="form-label"></label>
+            <input type="text" class="form-control" id="valueBased" name="{{ question.pk }}" />
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    {% if not request.user.is_authenticated %}
+    <div class="row justify-content-center mb-3">
+      <div class="col-md-6 col-sm-12 text-center">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" onChange="verifyEmail('{{ survey.pk }}')" name="email" value="" aria-describedby="emailHelp" required>
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mb-3">
+      <div class="col-md-6 col-sm-12 text-center">
+      {% if request.user.is_authenticated %}
+        <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
+      {% else %}
+        <button disabled id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
+      {% endif %}
+      </div>
+    </div>
+</div>
+</form>
+
+{% endblock %}

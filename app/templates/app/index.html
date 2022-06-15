@@ -1,0 +1,21 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<h2 class="my-2 display-6">SurveyDonkey - The best way to earn money by giving surveys</h2>
+<div class="row justify-content-center">
+    <div class="col-md-6 col-sm-12 text-center">
+        <h2 class="my-2">List of all available surveys</h2>
+    </div>
+</div>
+{% for survey in surveys %}
+<div class="row justify-content-center my-2">
+    <div class="card col-md-6 col-sm-12 position-relative">
+        <div class="card-body">
+            <h5 class="card-title">{{ forloop.counter }}. {{ survey.name }}</h5>
+          </div>
+          <a href="{% url 'give-survey' survey.pk %}" class="stretched-link"></a>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

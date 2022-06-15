@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %} 
+{% load crispy_forms_tags %} 
+
+{% block content %}
+
+<div class="row mt-5 justify-content-center">
+  <div class="col-md-6 col-sm-12">
+    <h2 class="mb-2">Create Your Survey</h2>
+    <form method="post">
+        {% csrf_token %}
+      {{ form | crispy }}
+      <button class="btn btn-primary mt-2">Submit</button>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}
